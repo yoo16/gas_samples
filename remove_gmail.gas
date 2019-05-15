@@ -1,0 +1,19 @@
+function removeGmail() {
+    var before_days = 30;
+    var spreadsheet_id = 'Spreadsheet ID';
+    var sheet = SpreadsheetApp.openById(spreadsheet_id).getActiveSheet();
+    var values = sheet.getDataRange().getValues();
+    for(var i = 0; i < values.length; i++) {
+        removeMail(values[i], before_days);
+    }
+}
+
+function removeMail(label, before_days) {
+    Logger.log(label);
+    var condition = 'older_than:' + before_days + 'd label:'+ label;
+    var threads = GmailApp.search(condition, 0, 100);
+    GmailApp.moveThreadsToTrash(threads);
+    //for (var i = 0; i < threads.length; i++) {
+    //    threads[i].moveToTrash();
+    //}
+}
